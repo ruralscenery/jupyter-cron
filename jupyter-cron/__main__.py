@@ -24,18 +24,19 @@ parser = argparse.ArgumentParser(description="Scans for file to run on a schedul
 parser.add_argument("glob", type=str, help="specify glob to search eg. test/**/*.ipynb")
 parser.add_argument("-d", "--daemonize", help="daemonize the process", action="store_true")
 parser.add_argument("-l", "--log", type=str, help="specify log file")
+parser.add_argument("-b", "--backupcount", type=int, default=30, help="specify log backup count")
 parser.add_argument("-r", "--refresh", type=int, help="refresh file time (default 5)")
 
 args = parser.parse_args()
 
 patternEveryN = re.compile('(.*) \(every (.*) at (.*)\)', re.IGNORECASE)
-patternTime = re.compile("(0?[1-9]|1[012])(.[0-5]\d)?[APap][mM]")
+patternTime = re.compile("(0?[1-9]|1[012])(\.[0-5]\d)?[APap][mM]")
 
-supported_exts = ['.py','.ipynb']
-every_X = ['day', 'monday', 'tuesday', 'wednesday','thursday', 'friday','saturday','sunday']
+supported_exts = ['.py', '.ipynb']
+every_X = ['day', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
 
 if args.log:
-    fh = logging.FileHandler(args.log)
+    fh = logging.TimedRotatingFileHandler(args.log, when='midnight', backupCount=args.backupcount)
     fh.setLevel(logging.INFO)
     fh.setFormatter(formatter)
     logger.addHandler(fh)
@@ -62,6 +63,8 @@ def job(filename):
 
 
 def build_schedule():
+    logger.info("build schedule")
+
     for filename in glob.iglob(args.glob, recursive=True):
         #print (filename)
         match = patternEveryN.match(filename)
@@ -105,7 +108,7 @@ def setup_schedule():
     schedule.every(refresh).minutes.do(build_schedule)
     build_schedule()
 
-    logger.info ("current schedule")
+    logger.info("current schedule")
     for j in schedule.jobs:
         logger.info (j)
 

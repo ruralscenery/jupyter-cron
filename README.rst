@@ -7,9 +7,9 @@ Currently filename with this pattern is supported:
 
 (every X at time) where
 
-**X** is ['day', 'monday', 'tuesday', 'wednesday','thursday', 'friday','saturday','sunday']
+**X** is ['day', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
 
-**time** is either in short form without minutes like 5PM or long form with minutes, 5:00PM
+**time** is either in short form without minutes like 5PM or long form with minutes, 5.00PM
 
 
 For example:
