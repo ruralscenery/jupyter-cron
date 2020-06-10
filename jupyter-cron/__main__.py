@@ -7,9 +7,10 @@ import pathlib
 import os
 import argparse
 import inspect
-from types import FunctionType
 import logging
 import datetime
+from types import FunctionType
+from logging import handlers
 
 logger = logging.getLogger('jupyter-cron')
 ch = logging.StreamHandler()
@@ -36,7 +37,7 @@ supported_exts = ['.py', '.ipynb']
 every_X = ['day', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
 
 if args.log:
-    fh = logging.handlers.TimedRotatingFileHandler(args.log, when='midnight', backupCount=args.backupcount)
+    fh = handlers.TimedRotatingFileHandler(args.log, when='midnight', backupCount=args.backupcount)
     fh.setLevel(logging.INFO)
     fh.setFormatter(formatter)
     logger.addHandler(fh)
