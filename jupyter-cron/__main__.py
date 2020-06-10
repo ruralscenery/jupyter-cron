@@ -36,7 +36,7 @@ supported_exts = ['.py', '.ipynb']
 every_X = ['day', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
 
 if args.log:
-    fh = logging.TimedRotatingFileHandler(args.log, when='midnight', backupCount=args.backupcount)
+    fh = logging.handlers.TimedRotatingFileHandler(args.log, when='midnight', backupCount=args.backupcount)
     fh.setLevel(logging.INFO)
     fh.setFormatter(formatter)
     logger.addHandler(fh)
